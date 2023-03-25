@@ -56,8 +56,8 @@ fontLoader.load(
       const text2Geometry = new TextGeometry('from my first ThreeJS app', {
           font: font,
           size: 0.06,
-          height: 0.015,
-          curveSegments: 12,
+          height: 0.2,
+          curveSegments: 8,
           bevelEnabled: true,
           bevelThickness: 0.01,
           bevelSize: 0.01,
@@ -72,8 +72,8 @@ fontLoader.load(
       const text2 = new THREE.Mesh(text2Geometry, textMaterial)
 
       text2.position.x = 0.82
-      text2.position.y = - 0.39
-      text2.position.z = 0.09
+      text2.position.y = - 0.383
+      text2.position.z = -0.1
 
 
       scene.add(text,text2)
