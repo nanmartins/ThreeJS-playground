@@ -8,13 +8,26 @@ import * as dat from 'lil-gui'
  * Base
  */
 // Debug
-const gui = new dat.GUI()
+// const gui = new dat.GUI()
 
 // Canvas
 const canvas = document.querySelector('canvas.webgl')
 
 // Scene
 const scene = new THREE.Scene()
+
+/**
+ * Lights
+ */
+// const ambientLight = new THREE.AmbientLight(0xffffff, 0.7)
+// scene.add(ambientLight)
+
+// const pointLight = new THREE.PointLight(0xffffff, 0.9)
+// pointLight.position.x = 2
+// pointLight.position.y = 3
+// pointLight.position.z = 4
+// scene.add(pointLight)
+
 
 /**
  * Textures
@@ -28,7 +41,7 @@ const textureLoader = new THREE.TextureLoader()
 // const AbstractNormal = textureLoader.load('/textures/AbstractNormal.jpg')
 // const AbstractRoughness = textureLoader.load('/textures/AbstractRoughness.jpg')
 
-const matcapTexture = textureLoader.load('textures/matcaps/7.png')
+// const matcapTexture = textureLoader.load('textures/matcaps/7.png')
 
 /**
  * Fonts
@@ -39,6 +52,20 @@ fontLoader.load(
     '/fonts/helvetiker_regular.typeface.json', (font) => {
         // Material
       const textMaterial = new THREE.MeshNormalMaterial()
+
+      // gui.add(textMaterial, 'metalness').min(0).max(1).step(0.001)
+      // gui.add(textMaterial, 'roughness').min(0).max(1).step(0.001)
+
+
+      // textMaterial.roughness = 0.2
+      // textMaterial.metalness = 0.7
+      // textMaterial.normalMap = AbstractNormal
+      // textMaterial.map = AbstractBaseColor
+      // textMaterial.aoMap = AbstractAmbientOcclusion
+      // textMaterial.aoMapIntensity = 0.85
+      // // textMaterial.displacementMap = AbstractHeight
+      // // textMaterial.displacementScale = 0.01
+      // textMaterial.normalScale.set(0.4, 0.4)
 
         // Text
       const textGeometry = new TextGeometry('Hello World', {
@@ -53,7 +80,7 @@ fontLoader.load(
           bevelSegments: 8
         }
       )
-      const text2Geometry = new TextGeometry('from my first ThreeJS app', {
+      const text2Geometry = new TextGeometry('welcome to my WebGL playground', {
           font: font,
           size: 0.06,
           height: 0.2,
@@ -71,7 +98,7 @@ fontLoader.load(
       const text = new THREE.Mesh(textGeometry, textMaterial)
       const text2 = new THREE.Mesh(text2Geometry, textMaterial)
 
-      text2.position.x = 0.82
+      text2.position.x = 0.485
       text2.position.y = - 0.383
       text2.position.z = -0.1
 
@@ -165,3 +192,14 @@ const tick = () =>
 }
 
 tick()
+
+
+
+
+
+// Dat Gui
+
+// gui.add(material, 'metalness').min(0).max(1).step(0.001)
+// gui.add(material, 'roughness').min(0).max(1).step(0.001)
+// gui.add(material, 'aoMapIntensity').min(0).max(10).step(0.001)
+// gui.add(material, 'displacementScale').min(0).max(1).step(0.001)
