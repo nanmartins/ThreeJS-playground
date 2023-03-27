@@ -32,7 +32,7 @@ const scene = new THREE.Scene()
 /**
  * Textures
  */
-const textureLoader = new THREE.TextureLoader()
+// const textureLoader = new THREE.TextureLoader()
 
 // const AbstractAmbientOcclusion = textureLoader.load('/textures/AbstractAmbientOcclusion.jpg')
 // const AbstractBaseColor = textureLoader.load('/textures/AbstractBaseColor.jpg')
@@ -48,79 +48,85 @@ const textureLoader = new THREE.TextureLoader()
  */
 const fontLoader = new FontLoader()
 
+// let text
+// let text2
+
 fontLoader.load(
-    '/fonts/helvetiker_regular.typeface.json', (font) => {
-        // Material
-      const textMaterial = new THREE.MeshNormalMaterial()
+  '/fonts/helvetiker_regular.typeface.json', (font) => {
+    // Material
+    const textMaterial = new THREE.MeshNormalMaterial()
 
-      // gui.add(textMaterial, 'metalness').min(0).max(1).step(0.001)
-      // gui.add(textMaterial, 'roughness').min(0).max(1).step(0.001)
-
-
-      // textMaterial.roughness = 0.2
-      // textMaterial.metalness = 0.7
-      // textMaterial.normalMap = AbstractNormal
-      // textMaterial.map = AbstractBaseColor
-      // textMaterial.aoMap = AbstractAmbientOcclusion
-      // textMaterial.aoMapIntensity = 0.85
-      // // textMaterial.displacementMap = AbstractHeight
-      // // textMaterial.displacementScale = 0.01
-      // textMaterial.normalScale.set(0.4, 0.4)
-
-        // Text
-      const textGeometry = new TextGeometry('Hello World', {
-          font: font,
-          size: 0.5,
-          height: 0.2,
-          curveSegments: 12,
-          bevelEnabled: true,
-          bevelThickness: 0.02,
-          bevelSize: 0.05,
-          bevelOffset: 0,
-          bevelSegments: 8
-        }
-      )
-      const text2Geometry = new TextGeometry('welcome to my WebGL playground', {
-          font: font,
-          size: 0.06,
-          height: 0.2,
-          curveSegments: 8,
-          bevelEnabled: true,
-          bevelThickness: 0.01,
-          bevelSize: 0.01,
-          bevelOffset: 0,
-          bevelSegments: 4
-        }
-      )
-      textGeometry.center()
-        // text2Geometry.center()
-
-      const text = new THREE.Mesh(textGeometry, textMaterial)
-      const text2 = new THREE.Mesh(text2Geometry, textMaterial)
-
-      text2.position.x = 0.485
-      text2.position.y = - 0.383
-      text2.position.z = -0.1
+    // gui.add(textMaterial, 'metalness').min(0).max(1).step(0.001)
+    // gui.add(textMaterial, 'roughness').min(0).max(1).step(0.001)
 
 
-      scene.add(text,text2)
+    // textMaterial.roughness = 0.2
+    // textMaterial.metalness = 0.7
+    // textMaterial.normalMap = AbstractNormal
+    // textMaterial.map = AbstractBaseColor
+    // textMaterial.aoMap = AbstractAmbientOcclusion
+    // textMaterial.aoMapIntensity = 0.85
+    // // textMaterial.displacementMap = AbstractHeight
+    // // textMaterial.displacementScale = 0.01
+    // textMaterial.normalScale.set(0.4, 0.4)
 
-      // Donuts
-      const donutGeometry = new THREE.TorusGeometry(0.3, 0.2, 32, 64)
-      const donutMaterial = new THREE.MeshDepthMaterial()
+      // Text
+    const textGeometry = new TextGeometry('Hello World', {
+        font: font,
+        size: 0.5,
+        height: 0.2,
+        curveSegments: 12,
+        bevelEnabled: true,
+        bevelThickness: 0.02,
+        bevelSize: 0.05,
+        bevelOffset: 0,
+        bevelSegments: 8
+      }
+    )
+    const text2Geometry = new TextGeometry('welcome to my WebGL playground', {
+        font: font,
+        size: 0.06,
+        height: 0.2,
+        curveSegments: 8,
+        bevelEnabled: true,
+        bevelThickness: 0.01,
+        bevelSize: 0.01,
+        bevelOffset: 0,
+        bevelSegments: 4
+      }
+    )
+    textGeometry.center()
 
-        for(let i = 0; i < 200; i++) {
-          const donut = new THREE.Mesh(donutGeometry, donutMaterial)
-          donut.position.x = (Math.random() - 0.5) * 10
-          donut.position.y = (Math.random() - 0.5) * 10
-          donut.position.z = (Math.random() - 0.5) * 10
+    const text = new THREE.Mesh(textGeometry, textMaterial)
+    const text2 = new THREE.Mesh(text2Geometry, textMaterial)
 
-          const scale = Math.random()
-          donut.scale.set(scale, scale, scale)
+    text2.position.x = 0.485
+    text2.position.y = - 0.383
+    text2.position.z = -0.1
 
-          scene.add(donut)
-        }
+
+    scene.add(text, text2)
+
+    // Donuts
+    const donutGeometry = new THREE.TorusGeometry(0.3, 0.2, 32, 64)
+    const donutMaterial = new THREE.MeshDepthMaterial()
+
+    for(let i = 0; i < 150; i++) {
+      const donut = new THREE.Mesh(donutGeometry, donutMaterial)
+      donut.position.x = (Math.random() - 0.5) * 10
+      donut.position.y = (Math.random() - 0.5) * 10
+      donut.position.z = (Math.random() - 0.5) * 10
+
+      // checking distance between donut and text
+      const distanceToText = donut.position.distanceTo(text.position)
+
+      if (distanceToText > 1.5) {
+        const scale = Math.random()
+        donut.scale.set(scale, scale, scale)
+        scene.add(donut)
+      }
     }
+  }
 )
 
 /**
@@ -153,9 +159,7 @@ window.addEventListener('resize', () =>
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.15, 100)
 camera.position.x = 0.1
 camera.position.y = -0.8
-camera.position.z = 2.1
-camera.rotation.x = 90
-camera.rotation.y = 20
+camera.position.z = 2
 
 scene.add(camera)
 
