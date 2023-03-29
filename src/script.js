@@ -32,7 +32,9 @@ const scene = new THREE.Scene()
 /**
  * Textures
  */
-// const textureLoader = new THREE.TextureLoader()
+const textureLoader = new THREE.TextureLoader()
+
+const particleTexture = textureLoader.load('/textures/particles/8.png')
 
 // const AbstractAmbientOcclusion = textureLoader.load('/textures/AbstractAmbientOcclusion.jpg')
 // const AbstractBaseColor = textureLoader.load('/textures/AbstractBaseColor.jpg')
@@ -42,6 +44,38 @@ const scene = new THREE.Scene()
 // const AbstractRoughness = textureLoader.load('/textures/AbstractRoughness.jpg')
 
 // const matcapTexture = textureLoader.load('textures/matcaps/7.png')
+
+//////// PARTICLES //////////////////
+const particlesGeomerty = new THREE.BufferGeometry(1, 32, 32)
+const particleCount = 1000
+
+const positions = new Float32Array(particleCount * 3)
+// const colors = new Float32Array(particleCount * 3)
+
+for (let i = 0; i < particleCount * 3; i++) {
+  positions[i] = (Math.random() - 0.5) * 20
+  // colors[i] = Math.random()
+}
+
+particlesGeomerty.setAttribute('position', new THREE.BufferAttribute(positions, 3))
+// particlesGeomerty.setAttribute('color', new THREE.BufferAttribute(colors, 3))
+
+
+const particlesMaterial = new THREE.PointsMaterial({
+  color: '#85C7DE',
+  size: 0.2,
+  sizeAttenuation: true
+})
+
+particlesMaterial.alphaMap = particleTexture
+particlesMaterial.transparent = true
+particlesMaterial.depthWrite = false
+// particlesMaterial.vertexColors = true
+
+const particles = new THREE.Points(particlesGeomerty, particlesMaterial)
+
+scene.add(particles)
+
 
 /**
  * Fonts
@@ -120,7 +154,7 @@ fontLoader.load(
       // checking distance between donut and text
       const distanceToText = donut.position.distanceTo(text.position)
 
-      if (distanceToText > 1.5) {
+      if (distanceToText > 2) {
         const scale = Math.random()
         donut.scale.set(scale, scale, scale)
         scene.add(donut)
@@ -166,6 +200,8 @@ scene.add(camera)
 // Controls
 const controls = new OrbitControls(camera, canvas)
 controls.enableDamping = true
+controls.minDistance = 1
+controls.maxDistance = 8
 
 /**
  * Renderer
